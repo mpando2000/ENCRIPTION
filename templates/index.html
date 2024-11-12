@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt & Decrypt Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome to Secure Messaging</h2>
+        <div class="buttons">
+            <a href="{{ url_for('generate_keys') }}"><button>Generate Keys</button></a>
+            <a href="{{ url_for('encrypt') }}"><button>Encrypt Message</button></a>
+            <a href="{{ url_for('decrypt') }}"><button>Decrypt Message</button></a>
+        </div>
+</body>
+</html>

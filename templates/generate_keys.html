@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Keys</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Generate RSA Key Pair</h2>
+        
+        {% if private_key and public_key %}
+            <!-- Display keys if they exist -->
+            <div class="key-section">
+                <h3>Private Key (Keep Secure)</h3>
+                <textarea readonly>{{ private_key }}</textarea>
+            </div>
+            <div class="key-section">
+                <h3>Public Key (Share with Sender)</h3>
+                <textarea readonly>{{ public_key }}</textarea>
+            </div>
+
+            <!-- Button to redirect to the encryption page -->
+            <a href="{{ url_for('encrypt') }}"><button>Go to Encrypt Message</button></a>
+            <a href="/"><button>Back to Home</button></a>
+        
+        {% else %}
+            <!-- Display generate button if keys don’t exist -->
+            <form method="POST">
+                <button type="submit">Generate Keys</button>
+            </form>
+            <a href="/"><button>Back to Home</button></a>
+        {% endif %}
+    </div>
+</body>
+</html>

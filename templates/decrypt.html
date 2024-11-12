@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decrypt Message</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Decrypt Message</h2>
+    
+        <label for="encrypted_message">Encrypted Message with Token:</label>
+        <textarea id="encrypted_message" placeholder="Paste the encrypted message here"></textarea>
+    
+        <button onclick="extractToken()">Extract Token</button>
+    
+        <div id="token_section" class="hidden">
+            <h3>Extracted Token:</h3>
+            <textarea id="extracted_token" readonly></textarea>
+    
+            <label for="entered_token">Enter Token:</label>
+            <input type="text" id="entered_token" placeholder="Enter token for verification">
+    
+            <button onclick="verifyToken()">Verify Token</button>
+        </div>
+    
+        <div id="cipher_text_section" class="hidden">
+            <h3>Verified Cipher Text:</h3>
+            <textarea id="cipher_text" readonly></textarea>
+    
+            <label for="private_key">Enter Your Private Key:</label>
+            <textarea id="private_key" placeholder="Paste your private key here"></textarea>
+    
+            <button type="button" onclick="decryptData()">Decrypt</button>
+    
+            <div id="decrypted_message_section" class="hidden">
+                <h3>Decrypted Message:</h3>
+                <textarea id="decrypted_message" readonly></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Pre-fill encrypted message from server-side if available
+        const encryptedMessageField = document.getElementById('encrypted_message');
+        const encryptedMessage = encryptedMessageField.value.trim();
+
+        function extractToken() {
+            const message = document.getElementById('encrypted_message').value.trim();
+        
+            if (!message) {
+                alert("Please enter an encrypted message.");
+                return;
+            }
+        
+            // Extract token assuming it's appended with "||"
+            const messageParts = message.split("||");
+            const extractedToken = messageParts[1] || ""; // Extract token
+        
+            document.getElementById('extracted_token').value = extractedToken;
+            document.getElementById('token_section').classList.remove('hidden');
+        
+            const cipherText = messageParts[0];
+            document.getElementById('cipher_text').value = cipherText;
+            document.getElementById('cipher_text_section').classList.remove('hidden');
+        }
+        
+        function verifyToken() {
+            const enteredToken = document.getElementById('entered_token').value.trim();
+            const extractedToken = document.getElementById('extracted_token').value.trim();
+        
+            if (enteredToken === extractedToken) {
+                alert("Token verified successfully.");
+                document.getElementById('cipher_text_section').classList.remove('hidden');
+            } else {
+                alert("Token verification failed.");
+            }
+        }
+        
+        async function decryptData() {
+            const cipherText = document.getElementById('cipher_text').value.trim();
+            const privateKey = document.getElementById('private_key').value.trim();
+        
+            if (!cipherText || !privateKey) {
+                alert("Please provide both the cipher text and your private key.");
+                return;
+            }
+        
+            try {
+                const response = await fetch('/decrypt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ encrypted_message: cipherText, private_key: privateKey })
+                });
+        
+                const result = await response.json();
+        
+                if (response.ok) {
+                    document.getElementById('decrypted_message').value = result.decrypted_message;
+                    document.getElementById('decrypted_message_section').classList.remove('hidden');
+                } else {
+                    alert("Error: " + result.error);
+                }
+            } catch (error) {
+                alert("An error occurred during decryption. Please try again.");
+                console.error("Decryption error:", error);
+            }
+        }
+        
+    </script>
+</body>
+</html>

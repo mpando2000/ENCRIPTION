@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Message</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Encrypt Message</h2>
+        
+        <label for="message">Message:</label>
+        <textarea id="message" placeholder="Enter your message here"></textarea>
+
+        <label for="public_key">Select Receiver's Public Key:</label>
+        <select id="public_key">
+            {% for public_key in public_keys %}
+                <option value="{{ public_key }}">{{ public_key }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="algorithm">Choose Encryption Algorithm:</label>
+        <select id="algorithm">
+            <option value="RSA">RSA</option>
+            <option value="AES">AES</option>
+        </select>
+
+        <label for="token">Add Token (Optional):</label>
+        <input type="text" id="token" placeholder="Enter token (optional)">
+
+        <button onclick="encryptData()">Encrypt & Show</button>
+
+        <div id="result" class="result" style="display: none;">
+            <h3>Encrypted Message:</h3>
+            <textarea id="encrypted_message" readonly></textarea>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <a href="/"><button>Back to Home</button></a>
+    </div>
+
+    <script>
+        async function encryptData() {
+            const message = document.getElementById('message').value.trim();
+            const public_key = document.getElementById('public_key').value;
+            const algorithm = document.getElementById('algorithm').value;
+            const token = document.getElementById('token').value.trim();
+
+            if (!message || !public_key || !algorithm) {
+                alert("Please enter all required fields.");
+                return;
+            }
+
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, public_key, algorithm, token })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('encrypted_message').value = result.encrypted_message;
+                document.getElementById('result').style.display = 'block';
+            } else {
+                alert("Error: " + result.error);
+            }
+        }
+
+        function copyToClipboard() {
+            const encryptedMessage = document.getElementById('encrypted_message');
+            encryptedMessage.select();
+            document.execCommand("copy");
+            alert("Encrypted message copied to clipboard!");
+        }
+
+        function sendMessage() {
+            window.location.href = "/decrypt";
+        }
+    </script>
+</body>
+</html>

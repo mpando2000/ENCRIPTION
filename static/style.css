@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border: 2px solid #333;
+    max-width: 600px; 
+    margin: 0 auto; 
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+
+textarea, input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e6e6e6;
+    border-radius: 5px;
+}
+
+/* Default hidden sections */
+.hidden {
+    display: none;
+}
+
+.key-section {
+    margin-top: 15px;
+}
+
+.key-section textarea {
+    min-height: 150px;
+    max-height: 400px;
+}
