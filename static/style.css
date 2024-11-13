@@ -17,6 +17,8 @@ body {
     padding: 20px;
     width: 100%;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 h2, h3 {
@@ -37,8 +39,8 @@ textarea, input[type="text"], select {
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    min-height: 100px;
-    max-height: 300px;
+    min-height: 50spx;
+    max-height: none;
     overflow-y: auto;
     resize: vertical;
 }
